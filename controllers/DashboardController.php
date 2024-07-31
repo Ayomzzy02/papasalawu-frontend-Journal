@@ -12,5 +12,17 @@ class DashboardController {
     public function adminDashboard() {
         include './views/adminDashboard.php';
     }
+
+    public function chiefArticleView() {
+        include './views/chiefArticleView.php';
+    }
+
+    public function reviewerDashboard() {
+        include './views/reviewerDashboard.php';
+    }
+
+    public function reviewerArticleView() {
+        include './views/reviewerArticleView.php';
+    }
 }
 ?>

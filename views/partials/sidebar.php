@@ -1,9 +1,9 @@
 <aside class="sidebar shadow-sm">
-    <h2 style="font-family: 'Arial Black', sans-serif;">University Name</h2>
+    <h2 style="font-family: 'Arial Black', sans-serif;">University of Ilorin</h2>
     <div class="logo-container">
-        <img src="/public/images/logo.png" alt="University Logo" style="width: 80%;">
+        <img src="/journalapp/public/images/unilorin.jpeg" alt="University Logo" style="width: 80%;">
     </div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non urna eget nisi laoreet tempor.</p>
+    <p>This journal is a platform for publishing and reading academic papers on various topics.</p>
     <div class="contact-details">
         <p><strong>Contact Us:</strong></p>
         <p>Email: info@university.com</p>

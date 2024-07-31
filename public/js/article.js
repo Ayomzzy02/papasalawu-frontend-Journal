@@ -1,16 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Simulated journal status for demonstration purposes
-    const journalStatus = 'Rejected'; // Change to 'Accepted' or 'Rejected' to test different statuses
-
     const navItems = document.querySelectorAll('.article-nav-item');
     const sections = document.querySelectorAll('section');
-
+    
     // Function to disable nav items based on status
     function disableNavItems(status) {
         navItems.forEach(item => {
             const itemStatus = item.getAttribute('data-status');
-            if ((status === 'In-Review' && itemStatus !== 'In-Review') || 
-                (status === 'Accepted' && itemStatus === 'Published') || 
+            if ((status === 'Submitted' && itemStatus !== 'In-Review') ||
+                (status === 'In-Review' && itemStatus !== 'In-Review') ||
+                (status === 'Accepted' && itemStatus === 'Published') ||
                 (status === 'Rejected' && itemStatus === 'Published')) {
                 item.classList.add('disabled');
             } else {
@@ -19,47 +17,127 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Function to display content based on status
-    function displayContent(status) {
-        sections.forEach(section => section.style.display = 'none');
-        if (status === 'In-Review') {
-            document.getElementById('in-review').style.display = 'block';
-        } else if (status === 'Accepted' || status === 'Rejected') {
-            document.getElementById('accepted-rejected').style.display = 'block';
-        } else if (status === 'Published') {
-            document.getElementById('published').style.display = 'block';
-        }
+    
+
+    // Extract articleId from URL path
+    function getArticleIdFromPath() {
+        const pathParts = window.location.pathname.split('/');
+        return pathParts[pathParts.length - 1];  // Assuming articleId is the last part of the path
     }
 
-    // Update the content based on the journal status
-    const acceptedRejectedSection = document.querySelector('#accepted-rejected');
-    if (journalStatus === 'Accepted') {
-        acceptedRejectedSection.innerHTML = `
-            <div class="status-container accepted">
-                <i class="fas fa-check-circle status-icon"></i>
-                <p class="status-message">Your journal has been approved.</p>
-                <p class="payment-details">Please send the payment to the following account details for online publishing:</p>
-                <p class="account-details">Account Name: XYZ Publishing<br>Account Number: 1234567890<br>Bank: ABC Bank</p>
-                <form class="payment-form">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="receipt">Receipt of Transaction</label>
-                        <input type="file" id="receipt" class="form-control-file" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Verify Payment</button>
-                </form>
-            </div>
-        `;
-    } else if (journalStatus === 'Rejected') {
-        acceptedRejectedSection.innerHTML = `
-            <div class="status-container rejected">
-                <i class="fas fa-times-circle status-icon"></i>
-                <p class="status-message">Your journal has been rejected by the Chief-Editor.</p>
-            </div>
-        `;
+    // Fetch user articles from the backend
+    function fetchUserArticle() {
+        const articleId = getArticleIdFromPath();
+        console.log('articleId:', articleId);  // Log to check if articleId is being retrieved
+        const axiosInstance = createAxiosInstance();
+        axiosInstance.get(`/journal/getUserArticle?articleId=${articleId}`)
+            .then(response => {
+                const article = response.data.data;
+                const articleStatus = article.status;
+                
+                // Populate article data
+                populateArticleData(article);
+                
+                // Update the content based on the journal status
+                disableNavItems(articleStatus);
+                displayContent(articleStatus);
+            })
+            .catch(error => {
+                console.error('Error fetching article:', error);
+            });
+    }
+
+    function fetchArticleHistory() {
+        const articleId = getArticleIdFromPath();
+        const axiosInstance = createAxiosInstance();
+        axiosInstance.get(`/journal/history/${articleId}`)
+            .then(response => {
+                const history = response.data.data;
+                populateHistoryTable(history);
+            })
+            .catch(error => {
+                console.error('Error fetching article history:', error);
+            });
+    }
+
+    function populateHistoryTable(history) {
+        const tbody = document.querySelector('.history-table tbody');
+        tbody.innerHTML = '';  // Clear the table body first
+
+        history.forEach(entry => {
+            const row = document.createElement('tr');
+            const issueCell = document.createElement('td');
+            const reviewersCell = document.createElement('td');
+            const dateCell = document.createElement('td');
+
+            issueCell.innerHTML = `<i class="fas fa-file-pdf"></i> ${entry.versionName}`;
+            reviewersCell.textContent = entry.reviewers.join(', ');
+            dateCell.textContent = new Date(entry.dateAdded).toLocaleDateString();
+
+            row.appendChild(issueCell);
+            row.appendChild(reviewersCell);
+            row.appendChild(dateCell);
+            tbody.appendChild(row);
+        });
+    }
+
+
+
+    // Populate article data
+    function populateArticleData(article) {
+        const acceptedRejectedSection = document.querySelector('#accepted-rejected');
+        if (article.status === 'Accepted') {
+            acceptedRejectedSection.innerHTML = `
+                <div class="status-container accepted">
+                    <i class="fas fa-check-circle status-icon"></i>
+                    <p class="status-message">Your journal has been approved.</p>
+                    <p class="payment-details">Please send the payment to the following account details for online publishing:</p>
+                    <p class="account-details">Account Name: XYZ Publishing<br>Account Number: 1234567890<br>Bank: ABC Bank</p>
+                    <form class="payment-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="receipt">Receipt of Transaction</label>
+                            <input type="file" id="receipt" class="form-control-file" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Verify Payment</button>
+                    </form>
+                </div>
+            `;
+
+            // Handle form submission for payment verification
+            const paymentForm = document.querySelector('.payment-form');
+            paymentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData();
+                formData.append('name', document.getElementById('name').value);
+                formData.append('receipt', document.getElementById('receipt').files[0]);
+                submitPaymentDetails(formData);
+            });
+        } else if (article.status === 'Rejected') {
+            acceptedRejectedSection.innerHTML = `
+                <div class="status-container rejected">
+                    <i class="fas fa-times-circle status-icon"></i>
+                    <p class="status-message">Your journal has been rejected by the Chief-Editor.</p>
+                </div>
+            `;
+        } else if (article.status === 'Published') {
+            const publishedSection = document.querySelector('#published');
+            publishedSection.innerHTML = `
+                <div class="status-container published">
+                    <i class="fas fa-book status-icon"></i>
+                    <p class="status-message">Your journal has been published.</p>
+                    <p class="journal-details">Title: ${article.title}</p>
+                    <p class="journal-details">Abstract: ${article.abstract}</p>
+                    <p class="journal-details">Keywords: ${article.keywords.join(', ')}</p>
+                    <p class="journal-details">Published Date: ${new Date(article.publishedDate).toLocaleDateString()}</p>
+                </div>
+            `;
+        }
+
+        fetchArticleHistory();
     }
 
     // In-Review Navigation
@@ -99,8 +177,87 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Initial setup based on journal status
-    disableNavItems(journalStatus);
-    displayContent(journalStatus);
+    // Initial setup
+    fetchUserArticle();
 
+    // Function to submit payment details
+    function submitPaymentDetails(formData) {
+        const articleId = getArticleIdFromPath();
+        const axiosInstance = createAxiosInstance();
+        axiosInstance.post(`/journal/payment/${articleId}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(response => {
+            if (response.status === 201) {
+                // Reload and update the page UI
+                const acceptedRejectedSection = document.querySelector('#accepted-rejected');
+                acceptedRejectedSection.innerHTML = `
+                    <div class="status-container accepted">
+                        <i class="fas fa-spinner fa-spin status-icon"></i>
+                        <p class="status-message">Your payment is being verified.</p>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Payment verification failed:', error);
+            showPaymentErrorModal();
+        });
+    }
+
+    // Function to show payment error modal
+    function showPaymentErrorModal() {
+        const modalHtml = `
+            <div class="modal fade" id="paymentErrorModal" tabindex="-1" role="dialog" aria-labelledby="paymentErrorModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="paymentErrorModalLabel">Payment Verification Failed</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Payment verification failed. Please try again.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        $('#paymentErrorModal').modal('show');
+    }
 });
+
+function createAxiosInstance() {
+    const axiosInstance = axios.create({
+        baseURL: 'http://localhost:8001/v1', // Set the base URL for your backend API
+    });
+
+    // Add a request interceptor to include the token in the Authorization header
+    axiosInstance.interceptors.request.use(
+        function (config) {
+            const token = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('token='))
+                ?.split('=')[1];
+            console.log(token)
+
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+
+            return config;
+        },
+        function (error) {
+            return Promise.reject(error);
+        }
+    );
+
+    return axiosInstance;
+}

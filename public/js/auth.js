@@ -63,7 +63,14 @@ document.getElementById("loginForm")?.addEventListener("submit", async function(
                     // Display success message and redirect to dashboard
                     document.getElementById("message").innerHTML = `<div class="alert alert-success">Login successful!</div>`;
                     window.location.href = "/journalapp/dashboard/admin";
+                } else if(userRole === "Reviewer") {
+                    document.cookie = `token=${token}; path=/; max-age=${24 * 60 * 60};`;
+                    // Display success message and redirect to dashboard
+                    document.getElementById("message").innerHTML = `<div class="alert alert-success">Login successful!</div>`;
+                    window.location.href = "/journalapp/dashboard/reviewer";
                 }
+             
+                
                 
             } else {
                 console.error('Failed to set session:', sessionResponse.data.message);

@@ -21,6 +21,7 @@ if (!isset($_SESSION['authToken']) || !isset($_SESSION['userRole']) || $_SESSION
         <label for="categoryDropdown">Select Category:</label>
         <select id="categoryDropdown">
             <option value="pending">Pending</option>
+            <option value="accepted">Accepted</option>
             <option value="published">Published</option>
             <option value="rejected">Rejected</option>
         </select>

@@ -12,8 +12,6 @@ if (!isset($_SESSION['authToken'])) {
 ?>
 
 <?php
-// Assume $articleStatus is a variable that contains the current status of the article
-
 $content = '
 <div id="article-container" class="container mt-3">
     <nav class="article-nav">
@@ -22,7 +20,6 @@ $content = '
         <a href="#published" class="article-nav-item" data-status="Published"><i class="fas fa-book"></i> Published</a>
     </nav>
     <div id="article-content">
-        <!-- In-Review Section -->
         <section id="in-review">
             <nav class="in-review-nav">
                 <div class="in-review-nav-item active" data-target="history"><i class="fas fa-history"></i> History</div>
@@ -38,33 +35,19 @@ $content = '
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><i class="fas fa-file-pdf"></i> Initial Upload</td>
-                            <td>John Doe, Jane Smith</td>
-                            <td>2024-07-01</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fas fa-file-pdf"></i> Seeing the Usefulness of this</td>
-                            <td>John Doe, Jane Smith</td>
-                            <td>2024-07-01</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fas fa-file-pdf"></i> Seeing the Usefulness of this</td>
-                            <td>John Doe, Jane Smith</td>
-                            <td>2024-07-01</td>
-                        </tr>
-                        <!-- Additional rows here -->
+                        <!-- Dynamic rows will be populated here -->
                     </tbody>
                 </table>
             </div>
             <div class="issue-content" id="issue" style="display:none;">
-                <!-- Issue content goes here -->
                 <p>No issues reported.</p>
             </div>
         </section>
-        <!-- Accepted/Rejected Section -->
         <section id="accepted-rejected" style="display: none;">
             <!-- Placeholder for the accepted/rejected content -->
+        </section>
+        <section id="published" style="display: none;">
+            <!-- Placeholder for the published content -->
         </section>
     </div>
 </div>

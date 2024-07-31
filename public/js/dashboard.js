@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     row.innerHTML = `
                         <td>${index + 1}</td>
                         <td>${article.title}</td>
-                        <td>${article.submissionDate.toLocaleDateString()}</td>
+                        <td>${article.submissionDate}</td>
                         <td>${article.acceptedDate}</td>
                         <td><span class="badge badge-${getStatusBadge(article.status)}">${article.status}</span></td>
                         <td><a href="/journalapp/article/${article._id}" class="btn btn-info btn-sm">View</a></td>

@@ -58,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 articleItem.classList.add('article-item');
                 articleItem.innerHTML = `
                     <a href="/journalapp/${departmentName}/article/${article.id}" class="article-link">
-                        <img src="././public/images/pdficon.svg" alt="PDF Icon" class="pdf-icon">
                         <div class="article-details">
                             <h2 class="article-title">${article.title.toUpperCase()}</h2>
                             <p class="article-author">Author: ${article.author}</p>

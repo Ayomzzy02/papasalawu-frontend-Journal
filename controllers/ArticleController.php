@@ -16,5 +16,11 @@ class ArticleController {
 
         include './views/getArticle.php';
     }
+
+    public function Issue($params) {
+
+        include './views/getArticle.php';
+    }
+
 }
 ?>

@@ -1,6 +1,6 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-light yellow">
-        <a class="navbar-brand" href="/">JournalApp</a>
+        <a class="navbar-brand" href="/journalapp">JournalApp</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -10,10 +10,10 @@
                     <a class="nav-link" href="/journalapp">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
+                    <a class="nav-link" href="/journalapp/">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contact">Contact</a>
+                    <a class="nav-link" href="/journalapp">Contact</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">

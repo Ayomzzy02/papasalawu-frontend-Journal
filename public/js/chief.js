@@ -17,9 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 displayArticles(articles.pending);
             } else if (category === 'published') {
                 displayArticles(articles.published);
+            } else if (category === 'accepted') {
+                displayArticles(articles.accepted);
             } else if (category === 'rejected') {
                 displayArticles(articles.rejected);
-            }
+            } 
         } catch (error) {
             console.error('Error fetching articles:', error);
             alert('An error occurred while fetching articles. Please try again later.');
@@ -34,9 +36,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${article.title}</td>
                 <td>${article.author.name}</td>
                 <td>${new Date(article.submissionDate).toLocaleDateString()}</td>
-                <td><button class="action-btn">View</button></td>
+                <td><button class="action-btn" data-article-id="${article._id}">View</button></td>
             `;
             articlesTableBody.appendChild(row);
+        });
+
+        // Add click event listener to "View" buttons after they are added to the DOM
+        document.querySelectorAll('.action-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const articleId = this.getAttribute('data-article-id');
+                window.location.href = `/journalapp/chief-Editor/view/${articleId}`;
+            });
         });
     }
 

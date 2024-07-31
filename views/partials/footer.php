@@ -2,9 +2,9 @@
     <div class="container p-2">
         <div class="row footer-content d-flex justify-content-between align-items-start">
             <div class="col-12 d-block d-lg-none text-start">
-                <h2>University Name</h2>
+                <h2>University of Ilorin</h2>
                 <div class="logo-container mb-2">
-                    <img src="/public/images/logo.png" alt="University Logo" class="img-fluid">
+                <img src="/journalapp/public/images/unilorin.jpeg" alt="University Logo" style="width: 80%;">
                 </div>
                 <p class="mb-2">This journal is a platform for publishing and reading academic papers on various topics.</p>
                 <div class="contact-details">
