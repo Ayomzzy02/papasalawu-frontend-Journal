@@ -2,13 +2,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const issuesTableBody = document.getElementById('issuesTableBody');
     const openIssuesCount = document.querySelector('.open-issues');
     const closedIssuesCount = document.querySelector('.closed-issues');
+    const newIssueForm = document.getElementById('newIssueForm');
     const axiosInstance = createAxiosInstance();
 
     // Function to fetch issues by article ID
     async function fetchIssuesByArticleId(articleId) {
         try {
-            const response = await axiosInstance.get(`/issues/article/${articleId}`);
-            const data = response.data;
+            const response = await axiosInstance.get(`issue/getAllIssues/${articleId}`);
+            const data = response.data.data;
 
             // Clear the table body before adding new rows
             issuesTableBody.innerHTML = '';
@@ -60,48 +61,43 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    const pathArray = window.location.pathname.split('/');
-    const articleId = decodeURIComponent(pathArray[pathArray.length - 1]);
-    if (articleId) {
-        fetchIssuesByArticleId(articleId);
-    }
+    // Function to create a new issue
+    newIssueForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    // New Issue button click event to show the modal
-    const newIssueBtn = document.querySelector('.new-issue-btn');
-    const newIssueModal = new bootstrap.Modal(document.getElementById('newIssueModal'));
+        console.log('Hello World')
 
-    newIssueBtn.addEventListener('click', () => {
-        newIssueModal.show();
-    });
-
-    // Form submission for creating a new issue
-    const newIssueForm = document.getElementById('newIssueForm');
-    newIssueForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        
         const issueTitle = document.getElementById('issueTitle').value;
         const issueDescription = document.getElementById('issueDescription').value;
 
+        const newIssue = {
+            title: issueTitle,
+            description: issueDescription,
+            status: 'Opened',
+            openedBy: 'Reviewer', // Adjust this according to your implementation
+            timeSinceOpened: 'Just now',
+            conversationCount: 0,
+        };
+
         try {
-            const response = await axiosInstance.post(`/issues/article/${articleId}`, {
-                title: issueTitle,
-                description: issueDescription
-            });
-
-            // Assuming the response contains the updated list of issues
+            const articleId = getArticleIdFromPath();
+            await axiosInstance.post(`issue/createIssue/${articleId}`, newIssue);
+            $('#newIssueModal').modal('hide');
             fetchIssuesByArticleId(articleId);
-
-            // Clear the form
-            newIssueForm.reset();
-
-            // Hide the modal
-            newIssueModal.hide();
-
         } catch (error) {
-            console.error('Error creating new issue:', error);
-            alert('Error creating new issue. Please try again.');
+            console.error('Error creating issue:', error);
         }
     });
+
+    function getArticleIdFromPath() {
+        const pathArray = window.location.pathname.split('/');
+        return decodeURIComponent(pathArray[pathArray.length - 1]);
+    }
+
+    const articleId = getArticleIdFromPath();
+    if (articleId) {
+        fetchIssuesByArticleId(articleId);
+    }
 });
 
 // Function to create Axios instance

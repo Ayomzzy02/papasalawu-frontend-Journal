@@ -1119,115 +1119,24 @@ header {
 /* Reviewer Article View Page Styles */
 .reviewer-article-view-container {
     padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa;
 }
 
 .page-heading {
-    font-size: 2rem;
-    color: #4a90e2;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.top-section, .middle-section, .bottom-section {
+    font-size: 2em;
     margin-bottom: 20px;
 }
 
 .section-heading {
-    font-size: 1.5rem;
-    color: #333;
+    font-size: 1.5em;
     margin-bottom: 10px;
 }
 
-.table {
-    width: 100%;
-    margin-bottom: 1rem;
-    color: #212529;
-}
-
-.table th, .table td {
-    padding: 0.75rem;
-    vertical-align: top;
-    border-top: 1px solid #dee2e6;
-}
-
-.table-hover tbody tr:hover {
-    color: #495057;
-    background-color: rgba(0, 0, 0, 0.075);
-}
-
-.issues-table-container {
-    width: 80%;
-    margin: 0 auto;
+.middle-section {
+    background: #fff;
     padding: 20px;
-    background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.issues-table-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.issues-count {
-    display: flex;
-    gap: 20px;
-}
-
-.issues-count span {
-    font-size: 1rem;
-    color: #333;
-}
-
-.issues-count .open-issues {
-    color: #e74c3c;
-}
-
-.issues-count .closed-issues {
-    color: #2ecc71;
-}
-
-.issues-table {
-    width: 100%;
-    margin-top: 20px;
-}
-
-.issues-table td {
-    padding: 15px;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.issue-row {
-    cursor: pointer;
-}
-
-.issue-row:hover {
-    background-color: #f2f2f2;
-}
-
-.issue-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #333;
-}
-
-.issue-meta {
-    font-size: 0.875rem;
-    color: #777;
-}
-
-.issue-conversations {
-    font-size: 1rem;
-    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -1413,4 +1322,55 @@ hr {
 
 .add-comment-btn {
     float: right;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }

@@ -2,7 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const associatedReviewersList = document.getElementById('associatedReviewersList');
     const reviewerSelect = document.getElementById('reviewerSelect');
     const addReviewerForm = document.getElementById('addReviewerForm');
-
+    const acceptButton = document.getElementById('acceptButton');
+    const rejectButton = document.getElementById('rejectButton');
+    const errorModal = document.getElementById('errorModal');
+    const closeModalButton = document.getElementById('closeModalButton');
+    const errorMessageElement = document.getElementById('errorMessage');
     const articleId = window.location.pathname.split('/').pop();
 
     // Fetch and display reviewers when the page loads
@@ -16,11 +20,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    acceptButton.addEventListener('click', function() {
+        acceptArticle();
+    });
+
+    closeModalButton.addEventListener('click', function() {
+        closeModal();
+    });
+
     async function fetchReviewers() {
         try {
             const axiosInstance = createAxiosInstance();
             const response = await axiosInstance.get(`/chief-editor/getArticleReviwers/${articleId}`);
-            const { reviewers, allReviewers } = response.data.data;
+            const { reviewers, allReviewers, articleStatus } = response.data.data;
+
+            console.log(articleStatus)
 
             // Populate reviewers section
             associatedReviewersList.innerHTML = '';
@@ -38,9 +52,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 option.textContent = `${reviewer.name} (${reviewer.anonymousName})`;
                 reviewerSelect.appendChild(option);
             });
+
+            // Update the UI based on the article status
+            const actionButtonsContainer = document.querySelector('.action-buttons');
+            if (articleStatus === 'Accepted') {
+                acceptButton.disabled = true;
+                rejectButton.remove();
+                actionButtonsContainer.innerHTML += `
+                    <p class="accepted-text">
+                        <i class="fas fa-check-circle"></i> This article has been accepted.
+                    </p>
+                `;
+            } else if (articleStatus === 'Rejected') {
+                rejectButton.disabled = true;
+                acceptButton.remove();
+                actionButtonsContainer.innerHTML += `
+                    <p class="rejected-text">
+                        <i class="fas fa-times-circle"></i> This article has been rejected.
+                    </p>
+                `;
+            } else if (articleStatus === 'Published') {
+                acceptButton.disabled = true;
+                rejectButton.remove();
+                actionButtonsContainer.innerHTML += `
+                    <p class="accepted-text">
+                        <i class="fas fa-check-circle"></i> This article has been Published.
+                    </p>
+                `;
+            }
         } catch (error) {
             console.error('Error fetching reviewers:', error);
-            alert('An error occurred while fetching reviewers. Please try again later.');
+            showErrorModal('An error occurred while fetching reviewers. Please try again later.');
         }
     }
 
@@ -52,7 +94,31 @@ document.addEventListener('DOMContentLoaded', function() {
             fetchReviewers();
         } catch (error) {
             console.error('Error adding reviewer:', error);
-            alert('An error occurred while adding the reviewer. Please try again later.');
+            showErrorModal('An error occurred while adding the reviewer. Please try again later.');
+        }
+    }
+
+    async function acceptArticle() {
+        try {
+            const axiosInstance = createAxiosInstance();
+            const response = await axiosInstance.patch(`/chief-editor/acceptArticle/${articleId}`);
+
+            if (response.status === 200) {
+                // Update the UI to reflect the accepted status
+                const actionButtonsContainer = document.querySelector('.action-buttons');
+                acceptButton.disabled = true;
+                rejectButton.remove();
+                actionButtonsContainer.innerHTML += `
+                    <p class="accepted-text">
+                        <i class="fas fa-check-circle"></i> This article has been accepted.
+                    </p>
+                `;
+            } else {
+                showErrorModal(response.data.data);
+            }
+        } catch (error) {
+            console.error('Error accepting article:', error);
+            showErrorModal(`An error occurred while accepting the article: ${error.message}`);
         }
     }
 
@@ -81,5 +147,15 @@ document.addEventListener('DOMContentLoaded', function() {
         );
 
         return axiosInstance;
+    }
+
+    function showErrorModal(message) {
+        errorMessageElement.textContent = message;
+        errorModal.style.display = 'block';
+        setTimeout(closeModal, 4000); // Hide the modal after 4 seconds
+    }
+
+    function closeModal() {
+        errorModal.style.display = 'none';
     }
 });

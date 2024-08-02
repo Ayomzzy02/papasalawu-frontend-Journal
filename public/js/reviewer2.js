@@ -1,133 +1,134 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    const issuesTableBody = document.getElementById('issuesTableBody');
-    const openIssuesCount = document.querySelector('.open-issues');
-    const closedIssuesCount = document.querySelector('.closed-issues');
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to create Axios instance
+    function createAxiosInstance() {
+        const axiosInstance = axios.create({
+            baseURL: 'http://localhost:8001/v1', // Set the base URL for your backend API
+        });
+
+        // Add a request interceptor to include the token in the Authorization header
+        axiosInstance.interceptors.request.use(
+            function (config) {
+                const token = document.cookie
+                    .split('; ')
+                    .find(row => row.startsWith('token='))
+                    ?.split('=')[1];
+
+                if (token) {
+                    config.headers.Authorization = `Bearer ${token}`;
+                }
+
+                return config;
+            },
+            function (error) {
+                return Promise.reject(error);
+            }
+        );
+
+        return axiosInstance;
+    }
+
     const axiosInstance = createAxiosInstance();
 
-    // Function to fetch issues by article ID
-    async function fetchIssuesByArticleId(articleId) {
-        try {
-            const response = await axiosInstance.get(`issue/getAllIssues/${articleId}`);
-            const data = response.data.data;
+    // Function to fetch and display issues
+    function fetchAndDisplayIssues(articleId) {
+        axiosInstance.get(`issue/getAllIssues/${articleId}`)
+            .then(response => {
+                const data = response.data.data;
 
-            // Clear the table body before adding new rows
-            issuesTableBody.innerHTML = '';
+                const openIssuesCountElement = document.getElementById('openIssuesCount');
+                const closedIssuesCountElement = document.getElementById('closedIssuesCount');
+                const issueListElement = document.getElementById('issueList');
+                const noIssuesMessageElement = document.getElementById('noIssuesMessage');
 
-            // Update the open and closed issues count
-            openIssuesCount.textContent = `${data.openIssuesCount} Open`;
-            closedIssuesCount.textContent = `${data.closedIssuesCount} Closed`;
+                // Update the counts
+                openIssuesCountElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${data.openIssuesCount} Open`;
+                closedIssuesCountElement.innerHTML = `<i class="fas fa-check-circle"></i> ${data.closedIssuesCount} Closed`;
 
-            // Check if there are issues to display
-            if (data.issues.length === 0) {
-                const noIssuesRow = document.createElement('tr');
-                noIssuesRow.innerHTML = `
-                    <td colspan="2">There are no issues reported for this article.</td>
-                `;
-                issuesTableBody.appendChild(noIssuesRow);
-                return;
-            }
+                // Clear the existing issues
+                issueListElement.innerHTML = '';
 
-            // Populate the table with the fetched issues
-            data.issues.forEach((issue, index) => {
-                const row = document.createElement('tr');
-                row.className = 'issue-row';
+                if (data.issues.length === 0) {
+                    noIssuesMessageElement.style.display = 'block';
+                } else {
+                    noIssuesMessageElement.style.display = 'none';
 
-                row.innerHTML = `
-                    <td>
-                        <a href="/journalapp/issues/${index + 1}">
-                            <span class="issue-status-icon">
-                                <i class="material-icons">${issue.status === 'Opened' ? 'error_outline' : 'check_circle_outline'}</i>
-                            </span>
+                    // Populate the issues
+                    data.issues.forEach(issue => {
+                        const issueItem = document.createElement('li');
+                        issueItem.classList.add('issue-item');
+
+                        issueItem.innerHTML = `
                             <div class="issue-title">${issue.title}</div>
-                            <div class="issue-meta">Opened ${issue.timeSinceOpened} by ${issue.openedBy}</div>
-                        </a>
-                    </td>
-                    <td class="text-right">
-                        <span class="issue-conversations"><i class="material-icons">comment</i> ${issue.conversationCount}</span>
-                    </td>
-                `;
+                            <div class="issue-meta">
+                                Opened ${issue.timeSinceOpened} by ${issue.openedBy}
+                            </div>
+                            <div class="issue-conversations">
+                                <i class="fas fa-comments"></i> ${issue.conversationCount}
+                            </div>
+                        `;
 
-                issuesTableBody.appendChild(row);
+                        issueListElement.appendChild(issueItem);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                // Handle error (e.g., show error modal)
+                const errorMessageElement = document.getElementById('errorMessage');
+                errorMessageElement.innerText = 'An error occurred while fetching issues.';
+                const errorModal = document.getElementById('errorModal');
+                errorModal.style.display = 'block';
             });
-
-        } catch (error) {
-            console.error('Error fetching issues:', error);
-            const errorRow = document.createElement('tr');
-            errorRow.innerHTML = `
-                <td colspan="2">Error fetching issues. Please try again later.</td>
-            `;
-            issuesTableBody.appendChild(errorRow);
-        }
     }
 
     const pathArray = window.location.pathname.split('/');
     const articleId = decodeURIComponent(pathArray[pathArray.length - 1]);
     if (articleId) {
-        fetchIssuesByArticleId(articleId);
+        fetchAndDisplayIssues(articleId);
     }
 
-    // New Issue button click event to show the modal
-    const newIssueBtn = document.querySelector('.new-issue-btn');
-    const newIssueModal = new bootstrap.Modal(document.getElementById('newIssueModal'));
+    // Event listeners for modals
+    const createIssueBtn = document.getElementById('createIssueBtn');
+    const createIssueModal = document.getElementById('createIssueModal');
+    const closeCreateIssueModalButton = document.getElementById('closeCreateIssueModalButton');
+    const closeErrorModalButton = document.getElementById('closeErrorModalButton');
 
-    newIssueBtn.addEventListener('click', () => {
-        newIssueModal.show();
+    createIssueBtn.addEventListener('click', function() {
+        createIssueModal.style.display = 'block';
     });
 
-    // Form submission for creating a new issue
-    const newIssueForm = document.getElementById('newIssueForm');
-    newIssueForm.addEventListener('submit', async (event) => {
+    closeCreateIssueModalButton.addEventListener('click', function() {
+        createIssueModal.style.display = 'none';
+    });
+
+    closeErrorModalButton.addEventListener('click', function() {
+        const errorModal = document.getElementById('errorModal');
+        errorModal.style.display = 'none';
+    });
+
+    // Event listener for creating a new issue
+    const createIssueForm = document.getElementById('createIssueForm');
+    createIssueForm.addEventListener('submit', function(event) {
         event.preventDefault();
-        
+
         const issueTitle = document.getElementById('issueTitle').value;
         const issueDescription = document.getElementById('issueDescription').value;
 
-        try {
-            const response = await axiosInstance.post(`/issues/article/${articleId}`, {
-                title: issueTitle,
-                description: issueDescription
-            });
-
-            // Assuming the response contains the updated list of issues
-            fetchIssuesByArticleId(articleId);
-
-            // Clear the form
-            newIssueForm.reset();
-
-            // Hide the modal
-            newIssueModal.hide();
-
-        } catch (error) {
-            console.error('Error creating new issue:', error);
-            alert('Error creating new issue. Please try again.');
-        }
+        axiosInstance.post(`issue/createIssue/${articleId}`, {
+            title: issueTitle,
+            description: issueDescription
+        })
+        .then(response => {
+            createIssueModal.style.display = 'none';
+            fetchAndDisplayIssues(articleId);
+        })
+        .catch(error => {
+            console.error(error);
+            // Handle error (e.g., show error modal)
+            const errorMessageElement = document.getElementById('errorMessage');
+            errorMessageElement.innerText = 'An error occurred while creating the issue.';
+            const errorModal = document.getElementById('errorModal');
+            errorModal.style.display = 'block';
+        });
     });
 });
-
-// Function to create Axios instance
-function createAxiosInstance() {
-    const axiosInstance = axios.create({
-        baseURL: 'http://localhost:8001/v1', // Set the base URL for your backend API
-    });
-
-    // Add a request interceptor to include the token in the Authorization header
-    axiosInstance.interceptors.request.use(
-        function (config) {
-            const token = document.cookie
-                .split('; ')
-                .find(row => row.startsWith('token='))
-                ?.split('=')[1];
-
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-
-            return config;
-        },
-        function (error) {
-            return Promise.reject(error);
-        }
-    );
-
-    return axiosInstance;
-}

@@ -42,50 +42,57 @@ if (!isset($_SESSION['authToken']) || !isset($_SESSION['userRole']) || $_SESSION
     </div>
 
     <!-- Middle section -->
-    <div class="middle-section">
-        <!-- Action buttons for accept and reject -->
-        <div class="action-buttons">
-            <button class="action-button accept-button">Accept</button>
-            <button class="action-button reject-button">Reject</button>
-        </div>
-        <!-- Middle section content goes here -->
-        <div class="issue-section">
-            <div class="issue-header">
-                <span class="issue-count open-issues">
-                    <i class="fas fa-exclamation-circle"></i>
-                    10 Open
-                </span>
-                <span class="issue-count closed-issues">
-                    <i class="fas fa-check-circle"></i>
-                    5 Closed
-                </span>
-            </div>
-            <ul class="issue-list">
-                <li class="issue-item">
-                    <div class="issue-title">Issue with article submission</div>
-                    <div class="issue-meta">
-                        Opened 2 hours ago by AnonymousReviewer1
-                    </div>
-                    <div class="issue-conversations">
-                        <i class="fas fa-comments"></i>
-                        3
-                    </div>
-                </li>
-                <li class="issue-item">
-                    <div class="issue-title">Error in the review process</div>
-                    <div class="issue-meta">
-                        Opened 1 day ago by AnonymousReviewer2
-                    </div>
-                    <div class="issue-conversations">
-                        <i class="fas fa-comments"></i>
-                        5
-                    </div>
-                </li>
-                <!-- Add more issue items as needed -->
-            </ul>
-        </div>
+<div class="middle-section">
+    <!-- Action buttons for accept and reject -->
+    <div class="action-buttons">
+        <button id="acceptButton" class="action-button accept-button">Accept</button>
+        <button id="rejectButton" class="action-button reject-button">Reject</button>
     </div>
+    <!-- Middle section content goes here -->
+    <div class="issue-section">
+        <div class="issue-header">
+            <span class="issue-count open-issues">
+                <i class="fas fa-exclamation-circle"></i>
+                10 Open
+            </span>
+            <span class="issue-count closed-issues">
+                <i class="fas fa-check-circle"></i>
+                5 Closed
+            </span>
+        </div>
+        <ul class="issue-list">
+            <li class="issue-item">
+                <div class="issue-title">Issue with article submission</div>
+                <div class="issue-meta">
+                    Opened 2 hours ago by AnonymousReviewer1
+                </div>
+                <div class="issue-conversations">
+                    <i class="fas fa-comments"></i>
+                    3
+                </div>
+            </li>
+            <li class="issue-item">
+                <div class="issue-title">Error in the review process</div>
+                <div class="issue-meta">
+                    Opened 1 day ago by AnonymousReviewer2
+                </div>
+                <div class="issue-conversations">
+                    <i class="fas fa-comments"></i>
+                    5
+                </div>
+            </li>
+            <!-- Add more issue items as needed -->
+        </ul>
+    </div>
+</div>
 
+<!-- Error Modal -->
+<div id="errorModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" id="closeModalButton">&times;</span>
+        <p id="errorMessage"></p>
+    </div>
+</div>
     <!-- Bottom section -->
     <div class="bottom-section">
         <!-- Bottom section content goes here -->
