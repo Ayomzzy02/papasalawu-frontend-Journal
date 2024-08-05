@@ -67,6 +67,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         `;
 
+                        issueItem.addEventListener('click', function() {
+                            window.location.href = `/journalapp/issues/${articleId}`;
+                        });
+
                         issueListElement.appendChild(issueItem);
                     });
                 }

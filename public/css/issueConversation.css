@@ -1,0 +1,105 @@
+.issue-page-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.issue-title-section {
+    margin-bottom: 20px;
+}
+
+.issue-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.issue-status-meta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.issue-status-icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.issue-meta-text {
+    font-size: 14px;
+    color: #555;
+}
+
+.issue-divider {
+    margin: 20px 0;
+}
+
+.conversations-container {
+    margin-bottom: 20px;
+}
+
+.conversation {
+    padding: 10px;
+    border-left: 2px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.conversation-meta {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.conversation-content {
+    font-size: 16px;
+}
+
+.conversation-divider {
+    margin: 10px 0;
+}
+
+.add-comment-section {
+    margin-top: 20px;
+}
+
+.add-comment-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.comment-editor {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.file-upload-section {
+    margin-bottom: 10px;
+}
+
+.file-upload-input {
+    display: none;
+}
+
+.file-upload-label {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-comment-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

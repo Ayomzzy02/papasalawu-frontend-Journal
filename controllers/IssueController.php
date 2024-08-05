@@ -2,7 +2,7 @@
 
 class IssueController {
     public function index() {
-        include './views/issues.php';
+        include './views/issueConversations.php';
     }
 }
 ?>
