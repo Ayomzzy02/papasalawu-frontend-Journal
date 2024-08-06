@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const password = document.getElementById("password").value;
         
         try {
-            const response = await axios.post("http://localhost:8001/v1/auth/signup", { name, email, password });
+            const response = await axios.post("http://journalapp.zyplexmedia.com:8001/v1/auth/signup", { name, email, password });
 
             if (response.status === 201) {
                 messageDiv.innerHTML = `<p class="success-message">${response.data.message}</p>`;
@@ -33,7 +33,7 @@ document.getElementById("loginForm")?.addEventListener("submit", async function(
     const password = document.getElementById("password").value;
 
     try {
-        const response = await axios.post("http://localhost:8001/v1/auth/signin", { email, password });
+        const response = await axios.post("http://journalapp.zyplexmedia.com:8001/v1/auth/signin", { email, password });
 
         if (response.status === 200) {
             // Save user object in local storage

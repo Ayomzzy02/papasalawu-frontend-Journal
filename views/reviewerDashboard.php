@@ -38,7 +38,7 @@ setcookie('token', $_SESSION['authToken'], time() + (86400 * 30), "/"); // 86400
     </div>
 </div>
 
-<script src="http://localhost/journalapp/public/js/reviewer.js"></script>
+<script src="http://journalapp.zyplexmedia.com/journalapp/public/js/reviewer.js"></script>
 
 <?php
 $content = ob_get_clean();

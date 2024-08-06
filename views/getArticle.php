@@ -9,11 +9,11 @@
     <p class="keywords-heading">Keywords:</p>
     <ul id="articleKeywords" class="article-keywords"></ul>
     <a id="pdfLink" class="pdf-link" href="#" target="_blank">
-        <img src="http://localhost/journalapp/public/images/pdficon.svg" alt="PDF Icon" class="pdf-icon">
+        <img src="http://journalapp.zyplexmedia.com/journalapp/public/images/pdficon.svg" alt="PDF Icon" class="pdf-icon">
     </a>
 </div>
 
-<script src="http://localhost/journalapp/public/js/getArticle.js"></script>
+<script src="http://journalapp.zyplexmedia.com/journalapp/public/js/getArticle.js"></script>
 
 <?php
 $content = ob_get_clean();

@@ -90,7 +90,7 @@ if (!isset($_SESSION['authToken'])) {
     </div>
 </div>
 
-<script src="http://localhost/journalapp/public/js/issueConversation.js"></script>
+<script src="http://journalapp.zyplexmedia.com/journalapp/public/js/issueConversation.js"></script>
 <?php
 $content = ob_get_clean();
 include './views/layouts/main.php';

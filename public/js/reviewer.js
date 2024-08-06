@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Function to create Axios instance
 function createAxiosInstance() {
     const axiosInstance = axios.create({
-        baseURL: 'http://localhost:8001/v1', // Set the base URL for your backend API
+        baseURL: 'http://journalapp.zyplexmedia.com:8001/v1', // Set the base URL for your backend API
     });
 
     // Add a request interceptor to include the token in the Authorization header

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     function createAxiosInstance() {
         const axiosInstance = axios.create({
-            baseURL: 'http://localhost:8001/v1',
+            baseURL: 'http://journalapp.zyplexmedia.com:8001/v1',
         });
 
         axiosInstance.interceptors.request.use(
