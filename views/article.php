@@ -51,6 +51,6 @@ $content = '
         </section>
     </div>
 </div>
-<script src="http://journalapp.zyplexmedia.com/journalapp/public/js/article.js"></script>';
+<script src="https://journalapp.zyplexmedia.com/journalapp/public/js/article.js"></script>';
 include './views/layouts/main.php';
 ?>

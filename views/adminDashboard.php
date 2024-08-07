@@ -127,7 +127,7 @@ if (!isset($_SESSION['authToken']) || !isset($_SESSION['userRole']) || $_SESSION
     </div>
 </div>
 
-<script src="http://journalapp.zyplexmedia.com/journalapp/public/js/admin.js"></script>
+<script src="https://journalapp.zyplexmedia.com/journalapp/public/js/admin.js"></script>
 
 <?php
 $content = ob_get_clean();
