@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    const issueTitleElement = document.getElementById('issueTitle');
+    const issueMetaElement = document.getElementById('issueMeta');
     const conversationsContainer = document.getElementById('conversationsContainer');
     const addCommentBtn = document.getElementById('addCommentBtn');
     const commentEditor = document.getElementById('commentEditor');
@@ -11,8 +13,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             const response = await axiosInstance.get(`issue/getConversations/${issueId}`);
             const data = response.data.data;
 
+            // Populate the title and meta information
+            issueTitleElement.textContent = data.title;
+            issueMetaElement.textContent = `${data.openedBy} opened this issue ${data.timeSinceOpened}`;
+
             // Clear the container before adding new conversations
             conversationsContainer.innerHTML = '';
+
+            // Add the description as the first conversation
+            const descriptionElement = document.createElement('div');
+            descriptionElement.className = 'conversation';
+
+            descriptionElement.innerHTML = `
+                <div class="conversation-meta">
+                    <span class="anonymous-name">${data.openedBy}</span> created this issue ${data.timeSinceOpened}
+                </div>
+                <div class="conversation-content">
+                    ${data.description}
+                </div>
+                <hr class="conversation-divider" />
+            `;
+
+            conversationsContainer.appendChild(descriptionElement);
 
             // Populate the container with the fetched conversations
             data.conversations.forEach(conversation => {
@@ -21,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 conversationElement.innerHTML = `
                     <div class="conversation-meta">
-                        <span class="anonymous-name">${conversation.anonymousName}</span> commented ${conversation.timeSince} ago
+                        <span class="anonymous-name">${conversation.anonymousName}</span> commented ${conversation.timeSince}
                     </div>
                     <div class="conversation-content">
                         ${conversation.content}
@@ -49,7 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Function to create Axios instance
     function createAxiosInstance() {
         const axiosInstance = axios.create({
-            baseURL: 'http://journalapp.zyplexmedia.com:8001/v1', // Set the base URL for your backend API
+            baseURL: 'https://api.zyplexmedia.com/v1', // Set the base URL for your backend API
         });
 
         // Add a request interceptor to include the token in the Authorization header
@@ -78,15 +100,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function addComment(issueId, content, file) {
         try {
             const formData = new FormData();
+            
             formData.append('content', content);
             if (file) {
                 formData.append('file', file);
             }
-
-            const response = await axiosInstance.post(`issue/addComment/${issueId}`, formData);
+            await axiosInstance.post(`issue/addComment/${issueId}`, {content: content});
             fetchIssueConversations(issueId);
 
         } catch (error) {
+            console.log(issueId, comment)
             console.error('Error adding comment:', error);
         }
     }

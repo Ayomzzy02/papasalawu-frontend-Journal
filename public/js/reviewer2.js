@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to create Axios instance
     function createAxiosInstance() {
         const axiosInstance = axios.create({
-            baseURL: 'http://journalapp.zyplexmedia.com:8001/v1', // Set the base URL for your backend API
+            baseURL: 'https://api.zyplexmedia.com/v1', // Set the base URL for your backend API
         });
 
         // Add a request interceptor to include the token in the Authorization header
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         `;
 
                         issueItem.addEventListener('click', function() {
-                            window.location.href = `/journalapp/issues/${articleId}`;
+                            window.location.href = `/journalapp/issues/${issue.issueId}`;
                         });
 
                         issueListElement.appendChild(issueItem);

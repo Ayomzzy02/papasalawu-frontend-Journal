@@ -16,13 +16,13 @@ if (!isset($_SESSION['authToken'])) {
 <div class="issue-page-container">
     <!-- Title Section -->
     <div class="issue-title-section">
-        <h1 class="issue-title">Issue Title Goes Here</h1>
+        <h1 class="issue-title" id="issueTitle">Issue Title Goes Here</h1>
     </div>
 
     <!-- Status and Metadata -->
     <div class="issue-status-meta">
         <span class="issue-status-icon"><i class="material-icons">error_outline</i></span>
-        <span class="issue-meta-text">AnonymousUser opened this issue 3 days ago</span>
+        <span class="issue-meta-text" id="issueMeta">AnonymousUser opened this issue 3 days ago</span>
     </div>
 
     <hr class="issue-divider" />
@@ -30,52 +30,6 @@ if (!isset($_SESSION['authToken'])) {
     <!-- Conversations Container -->
     <div class="conversations-container" id="conversationsContainer">
         <!-- Dynamic Conversation Data will be populated here -->
-        <div class="conversation">
-            <div class="conversation-meta">
-                <span class="anonymous-name">AnonymousUser</span> commented 3 days ago
-            </div>
-            <div class="conversation-content">
-                This is a sample comment.
-            </div>
-            <hr class="conversation-divider" />
-        </div>
-        <div class="conversation">
-            <div class="conversation-meta">
-                <span class="anonymous-name">AnonymousUser</span> commented 3 days ago
-            </div>
-            <div class="conversation-content">
-                This is a sample comment.
-            </div>
-            <hr class="conversation-divider" />
-        </div>
-        <div class="conversation">
-            <div class="conversation-meta">
-                <span class="anonymous-name">AnonymousUser</span> commented 3 days ago
-            </div>
-            <div class="conversation-content">
-                This is a sample comment.
-            </div>
-            <hr class="conversation-divider" />
-        </div>
-        <div class="conversation">
-            <div class="conversation-meta">
-                <span class="anonymous-name">AnonymousUser</span> commented 3 days ago
-            </div>
-            <div class="conversation-content">
-                This is a sample comment.
-            </div>
-            <hr class="conversation-divider" />
-        </div>
-        <div class="conversation">
-            <div class="conversation-meta">
-                <span class="anonymous-name">AnonymousUser</span> commented 3 days ago
-            </div>
-            <div class="conversation-content">
-                This is a sample comment.
-            </div>
-            <hr class="conversation-divider" />
-        </div>
-        <!-- More conversations will be added dynamically -->
     </div>
 
     <!-- Add Comment Section -->
