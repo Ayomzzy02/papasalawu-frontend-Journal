@@ -40,9 +40,33 @@ $content = '
                 </table>
             </div>
             <div class="issue-content" id="issue" style="display:none;">
-                <p>No issues reported.</p>
+                <!-- Middle section content goes here -->
+                <div class="issue-section">
+                    <div class="issue-header">
+                        <span class="issue-count open-issues" id="openIssuesCount">
+                            <i class="fas fa-exclamation-circle"></i>
+                            0 Open
+                        </span>
+                        <span class="issue-count closed-issues" id="closedIssuesCount">
+                            <i class="fas fa-check-circle"></i>
+                            0 Closed
+                        </span>
+                    </div>
+                    <ul class="issue-list" id="issueList">
+                        <!-- Issue items will be populated here -->
+                    </ul>
+                    <div id="noIssuesMessage" style="display: none;">There are no Issues Opened for this Article yet.</div>
+                </div>
+                <div id="errorModal" class="modal">
+                      <div class="modal-content">
+                            <span class="close-button" id="closeErrorModalButton">&times;</span>
+                            <p id="errorMessage"></p>
+                        </div>
+                </div>
+
             </div>
         </section>
+
         <section id="accepted-rejected" style="display: none;">
             <!-- Placeholder for the accepted/rejected content -->
         </section>
@@ -51,6 +75,6 @@ $content = '
         </section>
     </div>
 </div>
-<script src="https://journalapp.zyplexmedia.com/journalapp/public/js/article.js"></script>';
+<script src="/journalapp/public/js/article.js"></script>';
 include './views/layouts/main.php';
 ?>

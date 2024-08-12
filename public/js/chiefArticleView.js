@@ -7,10 +7,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorModal = document.getElementById('errorModal');
     const closeModalButton = document.getElementById('closeModalButton');
     const errorMessageElement = document.getElementById('errorMessage');
+    const issueList = document.getElementById('issueList');
+    const openIssuesCountElement = document.getElementById('openIssuesCount');
+    const closedIssuesCountElement = document.getElementById('closedIssuesCount');
     const articleId = window.location.pathname.split('/').pop();
 
-    // Fetch and display reviewers when the page loads
+    // Fetch and display reviewers and issues when the page loads
     fetchReviewers();
+    fetchIssues();
 
     addReviewerForm.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -86,6 +90,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    async function fetchIssues() {
+        try {
+            const axiosInstance = createAxiosInstance();
+            const response = await axiosInstance.get(`issue/getAllIssues/${articleId}`);
+            const { openIssuesCount, closedIssuesCount, issues } = response.data.data;
+
+            // Update the counts
+            openIssuesCountElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${openIssuesCount} Open`;
+            closedIssuesCountElement.innerHTML = `<i class="fas fa-check-circle"></i> ${closedIssuesCount} Closed`;
+
+            // Populate issues list
+            issueList.innerHTML = '';
+            issues.forEach(issue => {
+                const issueItem = document.createElement('li');
+                issueItem.classList.add('issue-item');
+                issueItem.innerHTML = `
+                    <div class="issue-title">${issue.title}</div>
+                    <div class="issue-meta">Opened ${issue.timeSinceOpened} by ${issue.openedBy}</div>
+                    <div class="issue-conversations">
+                        <i class="fas fa-comments"></i> ${issue.conversationCount}
+                    </div>
+                `;
+                issueList.appendChild(issueItem);
+            });
+        } catch (error) {
+            console.error('Error fetching issues:', error);
+            showErrorModal('An error occurred while fetching issues. Please try again later.');
+        }
+    }
+
     async function addReviewer(reviewerID) {
         try {
             const axiosInstance = createAxiosInstance();
@@ -118,8 +152,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error('Error accepting article:', error);
-            showErrorModal(`An error occurred while accepting the article: ${error.message}`);
+            showErrorModal(`${error.response.data.data} Resolve and close Issues on this article`);
         }
+    }
+
+    function closeModal() {
+        errorModal.style.display = 'none';
+    }
+
+    function showErrorModal(message) {
+        errorMessageElement.textContent = message;
+        errorModal.style.display = 'block';
     }
 
     function createAxiosInstance() {

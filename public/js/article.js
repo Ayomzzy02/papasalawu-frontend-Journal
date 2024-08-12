@@ -25,6 +25,63 @@ document.addEventListener('DOMContentLoaded', function() {
         return pathParts[pathParts.length - 1];  // Assuming articleId is the last part of the path
     }
 
+    // Function to fetch and display issues
+function fetchAndDisplayIssues(articleId) {
+    const axiosInstance = createAxiosInstance();  // Ensure axiosInstance is created here
+    axiosInstance.get(`issue/getAllIssues/${articleId}`)
+        .then(response => {
+            const data = response.data.data;
+
+            const openIssuesCountElement = document.getElementById('openIssuesCount');
+            const closedIssuesCountElement = document.getElementById('closedIssuesCount');
+            const issueListElement = document.getElementById('issueList');
+            const noIssuesMessageElement = document.getElementById('noIssuesMessage');
+
+            // Update the counts
+            openIssuesCountElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${data.openIssuesCount} Open`;
+            closedIssuesCountElement.innerHTML = `<i class="fas fa-check-circle"></i> ${data.closedIssuesCount} Closed`;
+
+            // Clear the existing issues
+            issueListElement.innerHTML = '';
+
+            if (data.issues.length === 0) {
+                noIssuesMessageElement.style.display = 'block';
+            } else {
+                noIssuesMessageElement.style.display = 'none';
+
+                // Populate the issues
+                data.issues.forEach(issue => {
+                    const issueItem = document.createElement('li');
+                    issueItem.classList.add('issue-item');
+
+                    issueItem.innerHTML = `
+                        <div class="issue-title">${issue.title}</div>
+                        <div class="issue-meta">
+                            Opened ${issue.timeSinceOpened} by ${issue.openedBy}
+                        </div>
+                        <div class="issue-conversations">
+                            <i class="fas fa-comments"></i> ${issue.conversationCount}
+                        </div>
+                    `;
+
+                    issueItem.addEventListener('click', function() {
+                        window.location.href = `/journalapp/issues/${issue.issueId}`;
+                    });
+
+                    issueListElement.appendChild(issueItem);
+                });
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            // Handle error (e.g., show error modal)
+            const errorMessageElement = document.getElementById('errorMessage');
+            errorMessageElement.innerText = 'An error occurred while fetching issues.';
+            const errorModal = document.getElementById('errorModal');
+            errorModal.style.display = 'block';
+        });
+}
+
     // Fetch user articles from the backend
     function fetchUserArticle() {
         const articleId = getArticleIdFromPath();
@@ -140,25 +197,30 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchArticleHistory();
     }
 
-    // In-Review Navigation
-    const inReviewNavItems = document.querySelectorAll('.in-review-nav-item');
-    const historyContent = document.getElementById('history');
-    const issueContent = document.getElementById('issue');
+ 
+// In-Review Navigation
+const inReviewNavItems = document.querySelectorAll('.in-review-nav-item');
+const historyContent = document.getElementById('history');
+const issueContent = document.getElementById('issue');
 
-    inReviewNavItems.forEach(item => {
-        item.addEventListener('click', function() {
-            inReviewNavItems.forEach(nav => nav.classList.remove('active'));
-            item.classList.add('active');
-            const target = item.getAttribute('data-target');
-            if (target === 'history') {
-                historyContent.style.display = 'block';
-                issueContent.style.display = 'none';
-            } else if (target === 'issue') {
-                historyContent.style.display = 'none';
-                issueContent.style.display = 'block';
-            }
-        });
+inReviewNavItems.forEach(item => {
+    item.addEventListener('click', function() {
+        inReviewNavItems.forEach(nav => nav.classList.remove('active'));
+        item.classList.add('active');
+        const target = item.getAttribute('data-target');
+        if (target === 'history') {
+            historyContent.style.display = 'block';
+            issueContent.style.display = 'none';
+        } else if (target === 'issue') {
+            historyContent.style.display = 'none';
+            issueContent.style.display = 'block';
+            
+            // Fetch and display issues when the Issue tab is clicked
+            const articleId = getArticleIdFromPath();
+            fetchAndDisplayIssues(articleId);
+        }
     });
+});
 
     // Switch content based on article status
     navItems.forEach(item => {
