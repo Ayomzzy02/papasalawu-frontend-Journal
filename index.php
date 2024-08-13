@@ -10,7 +10,7 @@ require './controllers/IssueController.php';
 $router = new Router();
 
 // Define routes
-$router->add('/', [new HomeController(), 'index']);
+$router->add('/home', [new HomeController(), 'index']);
 $router->add('/journalapp/about', [new AboutController(), 'index']);
 $router->add('/journalapp/signup', [new SignupController(), 'index']);
 $router->add('/journalapp/login', [new LoginController(), 'index']);

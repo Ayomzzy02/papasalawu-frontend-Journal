@@ -44,8 +44,8 @@ document.getElementById("loginForm")?.addEventListener("submit", async function(
             console.log(token);
             console.log(userRole);
 
-            const sessionResponse1 = await axios.post("/journalapp/setSession.php", { token });
-            const sessionResponse2 = await axios.post("/journalapp/setSession2.php", { userRole });
+            const sessionResponse1 = await axios.post("setSession.php", { token });
+            const sessionResponse2 = await axios.post("setSession2.php", { userRole });
             
             if (sessionResponse1.data.status && sessionResponse2.data.status === 'success') {
                 if(userRole === "Chief-Editor") {

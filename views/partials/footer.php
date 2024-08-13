@@ -4,7 +4,7 @@
             <div class="col-12 d-block d-lg-none text-start">
                 <h2>University of Ilorin</h2>
                 <div class="logo-container mb-2">
-                <img src="/journalapp/public/images/unilorin.jpeg" alt="University Logo" style="width: 80%;">
+                <img src="/public/images/unilorin.jpeg" alt="University Logo" style="width: 80%;">
                 </div>
                 <p class="mb-2">This journal is a platform for publishing and reading academic papers on various topics.</p>
                 <div class="contact-details">

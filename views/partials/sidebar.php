@@ -1,7 +1,7 @@
 <aside class="sidebar shadow-sm">
     <h2 style="font-family: 'Arial Black', sans-serif;">University of Ilorin</h2>
     <div class="logo-container">
-        <img src="/journalapp/public/images/unilorin.jpeg" alt="University Logo" style="width: 80%;">
+        <img src="/public/images/unilorin.jpeg" alt="University Logo" style="width: 80%;">
     </div>
     <p>This journal is a platform for publishing and reading academic papers on various topics.</p>
     <div class="contact-details">
