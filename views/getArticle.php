@@ -13,7 +13,7 @@
     </a>
 </div>
 
-<script src="https://nijetunilorin.com/journalapp/public/js/getArticle.js"></script>
+<script src="https://nijetunilorin.com/public/js/getArticle.js"></script>
 
 <?php
 $content = ob_get_clean();

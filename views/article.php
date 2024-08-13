@@ -75,6 +75,6 @@ $content = '
         </section>
     </div>
 </div>
-<script src="https://nijetunilorin.com/journalapp/public/js/article.js"></script>';
+<script src="https://nijetunilorin.com/public/js/article.js"></script>';
 include './views/layouts/main.php';
 ?>

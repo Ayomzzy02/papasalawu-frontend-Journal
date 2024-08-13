@@ -88,7 +88,7 @@ if (!isset($_SESSION['authToken']) || !isset($_SESSION['userRole']) || $_SESSION
     </div>
 </div>
 
-<script src="https://nijetunilorin.com/journalapp/public/js/reviewer2.js"></script>
+<script src="https://nijetunilorin.com/public/js/reviewer2.js"></script>
 
 <?php
 $content = ob_get_clean();
