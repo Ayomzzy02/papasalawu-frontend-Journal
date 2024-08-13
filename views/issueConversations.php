@@ -44,7 +44,7 @@ if (!isset($_SESSION['authToken'])) {
     </div>
 </div>
 
-<script src="https://journalapp.zyplexmedia.com/journalapp/public/js/issueConversation.js"></script>
+<script src="https://nijetunilorin.com/journalapp/public/js/issueConversation.js"></script>
 <?php
 $content = ob_get_clean();
 include './views/layouts/main.php';

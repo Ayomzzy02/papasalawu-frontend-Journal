@@ -6,8 +6,8 @@
     <!-- Bootstrap CSS from CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://journalapp.zyplexmedia.com/journalapp/public/css/styles.css">
-    <link rel="stylesheet" href="https://journalapp.zyplexmedia.com/journalapp/public/css/issueConversation.css">
+    <link rel="stylesheet" href="https://nijetunilorin.com/journalapp/public/css/styles.css">
+    <link rel="stylesheet" href="https://nijetunilorin.com/journalapp/public/css/issueConversation.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Unilorin Edu Journal App</title>
 </head>
@@ -31,6 +31,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://journalapp.zyplexmedia.com/journalapp/public/js/auth.js"></script>
+    <script src="https://nijetunilorin.com/journalapp/public/js/auth.js"></script>
 </body>
 </html>
